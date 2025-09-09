@@ -6,6 +6,9 @@ import { parseCSV } from "./basic-parser";
 
 const DATA_FILE = "./data/people.csv"; // update with your actual file name
 
+/**
+ * The main function to run the parser and print results.
+ */
 async function main() {
   // Because the parseCSV function needs to "await" data, we need to do the same here.
   const results = await parseCSV(DATA_FILE)

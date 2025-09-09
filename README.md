@@ -56,6 +56,29 @@ The CSV parser could also validate the CSV such that the number of entries per r
 
   My initial ideas were grounded in mostly functionality issues, but the LLM helped me see that extensibility issues were just as important. The LLM also helped me reflect upon my ideas and turn them into actionable user stories. Lastly, when I changed the prompt, the LLM was able to provide more detailed reasons for why each issue was important.
 
+### Reflection
+
+1. Correctness
+   What makes a CSV parser “correct”? We're not asking for additional input-output pairs here, but fairly precise, natural-language descriptions. Put another way, what kinds of general properties should your tests be checking about your CSV parser?
+
+- A correct CSV parser shuold accurately handle any and all-types of comma separated value data. This includes handling edge cases such as commas within quoted fields, escaped quotes, and escaped characters.
+- A correct CSV parser should also be able to handle inconsistent CSV files and throw errors when necessary.
+- A correct CSV parser should finally be able to convert CSV data into structured objects / structured lists where rows are correctly separated as intended.
+
+1. Random, On-Demand Generation
+   Suppose we gave you a function that randomly produced CSV data on demand. You could then call this class from your testing code. How might you use this source of random data to expand the power of your testing?
+
+   - I could use this random data generator to be able to iteratively find edge case scenarios that I may not have thought of.
+   - If my CSV parser runs into some error, I could use that test case to further refine the parser.
+   - Furthermore, I could also use the random data generator as a sanity smoke/pre-commit test to ensure that my parser is working as intended.
+
+2. Overall experience, Bugs encountered and resolved
+   In what ways did this sprint differ from prior programming assignments you’ve done? Did anything surprise you? Did you encounter any bugs during your work on this sprint? If yes, what were they and how did you fix them? If not, how do you think that you managed to avoid them?
+
+   - This sprint was different because it was a lot more open-ended than previous assignments. This made me have to think more critically about user stories and designing for the purpose of the client.
+   - Furthermore, I encountered some bugs when working with Zod, specifically what types to implement and where to put them.
+   - I fixed them with help from the Zod helper documentation on the CS320 website and also by asking Copilot what is the standard practice for generic typing in TypeScript.
+
 ### Design Choices
 
 ### 1340 Supplement

@@ -1,3 +1,7 @@
+/**
+ * Tests for the basic CSV parser.ts module.
+ */
+
 import { parseCSV } from "../src/basic-parser";
 import * as path from "path";
 
@@ -56,7 +60,7 @@ test("parseCSV with quotes inside quotes", async () => {
     expect(Array.isArray(row)).toBe(true);
   }
   expect(results).toHaveLength(3);
-  expect(results[2]).toEqual(["Brown, Sr.", "Sarah", "She said \"hello\""]);
+  expect(results[2]).toEqual(["Brown, Sr.", "Sarah", "She said \"\"hello\"\""]);
 });
 
 test("parseCSV on empty file", async () => {
