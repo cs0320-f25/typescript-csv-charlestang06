@@ -1,3 +1,5 @@
+Note: my answers to the questions are in this README.
+
 # Sprint 1: TypeScript CSV
 
 ### Task C: Proposing Enhancement

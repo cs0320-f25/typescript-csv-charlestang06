@@ -3,6 +3,7 @@
  */
 
 import { parseCSV } from "../src/basic-parser";
+import { z } from "zod"
 import * as path from "path";
 
 const PEOPLE_CSV_PATH = path.join(__dirname, "../data/people.csv");
@@ -69,4 +70,44 @@ test("parseCSV on empty file", async () => {
   for (const row of results) {
     expect(Array.isArray(row)).toBe(true);
   }
+});
+
+test("parseCSV with Zod schema invalid data", async() => {
+  /**
+   * Test a people csv where the last row has an invalid age (negative number).
+   */
+  const PersonRowSchema = z.tuple([z.string(), z.coerce.number()])
+                         .transform( tup => ({name: tup[0], age: tup[1]}))
+                         .refine( obj => obj.age >= 0 );
+
+                         try {
+                           const results = await parseCSV(PEOPLE_CSV_PATH, PersonRowSchema);
+                           fail("Expected an error to be thrown");
+                         } catch (error) {
+                           expect(error).toBeInstanceOf(Error);
+                         }
+  
+});
+
+test("parseCSV with different Zod schema with valid data", async() => {
+  /**
+   * Test a people csv where the last row has an invalid age (negative number).
+   */
+  const PersonRowSchema = z.tuple([z.string(), z.coerce.number(), z.string()])
+                         .transform( tup => ({name: tup[0], age: tup[1], city: tup[2]}))
+                         .refine( obj => {
+                           return obj.age >= 0 && obj.city.length > 0 && obj.name.length > 0;
+                         });
+
+                         try {
+                           const results = await parseCSV(PEOPLE_CSV_PATH, PersonRowSchema);
+                           expect(results).toHaveLength(4);
+                           expect(results[0]).toEqual({name: "Alice", age: 23, city: "Wonderland"});
+                           expect(results[1]).toEqual({name: "Bob", age: 30, city: "Boulder"});
+                           expect(results[2]).toEqual({name: "Charlie", age: 25, city: "Springfield"});
+                           expect(results[3]).toEqual({name: "Nim", age: 22, city: "Shire"});
+                         } catch (error) {
+                           expect(error).toBeInstanceOf(Error);
+                         }
+  
 });
